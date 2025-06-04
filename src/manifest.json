@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "HH Resume Exporter",
+  "version": "0.1.0",
+  "description": "Export resume data from hh.kz to external API.",
+  "permissions": ["storage", "downloads"],
+  "host_permissions": [
+    "https://hh.kz/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://hh.kz/resume/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "options_page": "options.html"
+}
