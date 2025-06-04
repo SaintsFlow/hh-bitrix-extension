@@ -1,5 +1,5 @@
 (function() {
-  const API_URL = 'https://example.com/api/resume'; // change to your API
+  const API_URL = document.getElementById("apiRoot").value.trim();
 
   function getApiKey() {
     return new Promise((resolve) => {
@@ -36,7 +36,7 @@
   async function sendResume() {
     const apiKey = await getApiKey();
     if (!apiKey) {
-      alert('API key is not set in extension options.');
+      alert('API ключ не установлен');
       return;
     }
 
@@ -65,8 +65,32 @@
 
     const btn = document.createElement('button');
     btn.id = 'hh-export-btn';
-    btn.textContent = 'Export Resume';
+    btn.textContent = 'Выгрузить!';
+
+    // Применяем стили через JavaScript
+    btn.style.background = 'linear-gradient(135deg, #4a90e2, #357abd)';
+    btn.style.color = 'white';
+    btn.style.border = 'none';
+    btn.style.padding = '8px 16px';
+    btn.style.borderRadius = '6px';
+    btn.style.fontSize = '13px';
+    btn.style.fontWeight = '500';
+    btn.style.cursor = 'pointer';
+    btn.style.transition = 'all 0.2s ease';
     btn.style.marginLeft = '8px';
+    btn.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+
+    // Добавляем эффект hover
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transform = 'translateY(-1px)';
+      btn.style.boxShadow = '0 4px 12px rgba(74, 144, 226, 0.3)';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translateY(0)';
+      btn.style.boxShadow = 'none';
+    });
+
     btn.addEventListener('click', sendResume);
     container.appendChild(btn);
   }
