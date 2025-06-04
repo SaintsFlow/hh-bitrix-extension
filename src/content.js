@@ -71,5 +71,9 @@
     container.appendChild(btn);
   }
 
-  document.addEventListener('DOMContentLoaded', injectButton);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectButton);
+  } else {
+    injectButton();
+  }
 })();
