@@ -4,18 +4,267 @@
   <meta charset="UTF-8">
   <title>HH Resume Exporter Options</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      color: #2c5aa0;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      color: #555;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+      background: #f8f9fa;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #4a90e2;
+      background: white;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #save {
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: white;
+    }
+
+    #save:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    #logout {
+      background: #f8f9fa;
+      color: #666;
+      border: 1px solid #e1e5e9;
+    }
+
+    #logout:hover {
+      background: #e9ecef;
+      color: #495057;
+    }
+
+    #info {
+      background: #f8f9fa;
+      border: 1px solid #e1e5e9;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .info-block {
+      background: #f8f9fa;
+      border: 1px solid #e1e5e9;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .user-info {
+      background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+      border: 1px solid #b3d9ff;
+      color: #2c5aa0;
+      font-weight: 500;
+    }
+
+    .expires-soon {
+      color: #dc3545 !important;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+
+    .expires-normal {
+      color: #28a745;
+      font-weight: 500;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    .error-info {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      color: #c53030;
+    }
+
+    .alert-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .alert-box {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .alert-title {
+      color: #dc3545;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .alert-message {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .alert-button {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .alert-button:hover {
+      background: #c82333;
+    }
+
+    /* Стили для кнопки экспорта */
+    .export-btn {
+      background: linear-gradient(135deg, #4a90e2, #357abd) !important;
+      color: white !important;
+      border: none !important;
+      padding: 8px 16px !important;
+      border-radius: 6px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      margin-left: 8px !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+
+    .export-btn:hover {
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3) !important;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #4a90e2;
+    }
   </style>
 </head>
 <body>
-  <h1>Extension Settings</h1>
-  <label>
-    API Key:
-    <input type="text" id="apiKey" />
-  </label>
-  <button id="save">Save</button>
-  <button id="logout">Logout</button>
-  <pre id="info"></pre>
-  <script src="options.js"></script>
-</body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-text">HH Exporter</div>
+    </div>
+    
+    <h1>Extension Settings</h1>
+    
+    <div class="form-group">
+      <label for="apiRoot">API Root:</label>
+      <input type="text" id="apiRoot" placeholder="https://example.com/api" />
+    </div>
+    
+    <div class="form-group">
+      <label for="apiKey">API Key:</label>
+      <input type="text" id="apiKey" placeholder="Введите ваш API ключ" />
+    </div>
+    
+    <div class="button-group">
+      <button id="save">Войти</button>
+      <button id="logout" style="display:none">Выйти</button>
+    </div>
+    
+    <div id="info" class="info-block"></div>
+  </div>
+<script src="options.js"></script>
+  </body>
 </html>
