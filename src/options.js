@@ -73,7 +73,7 @@ async function showInfo() {
   }
 
   try {
-    const resp = await fetch(`${apiRoot}/check`, {
+    const resp = await fetch(`${apiRoot}/employee/data`, {
       headers: { Authorization: `Bearer ${key}` },
     });
 
@@ -81,12 +81,18 @@ async function showInfo() {
       throw new Error(`HTTP ${resp.status}`);
     }
 
-    const data = await resp.json();
+    const response = await resp.json();
 
+    if (!response.success) {
+      throw new Error("API returned error");
+    }
+
+    const { employee, client, token_info } = response.data;
     const infoDiv = document.getElementById("info");
-    const expiresDate = new Date(data.expires);
+    
+    const subscriptionEndDate = new Date(client.subscription_end_date);
     const now = new Date();
-    const daysLeft = Math.ceil((expiresDate - now) / (1000 * 60 * 60 * 24));
+    const daysLeft = Math.ceil((subscriptionEndDate - now) / (1000 * 60 * 60 * 24));
 
     let expiresClass = "expires-normal";
     if (daysLeft <= 7) {
@@ -95,11 +101,19 @@ async function showInfo() {
     }
 
     infoDiv.innerHTML = `
-          <div><strong>Пользователь:</strong> ${data.user}</div>
-          <div><strong>Подписка до:</strong> <span class="${expiresClass}">${formatDate(
-      expiresDate
-    )} (${daysLeft} дней)</span></div>
-        `;
+      <div><strong>Сотрудник:</strong> ${employee.name}</div>
+      <div><strong>Email:</strong> ${employee.email}</div>
+      <div><strong>Должность:</strong> ${employee.position || 'Не указана'}</div>
+      <div><strong>Телефон:</strong> ${employee.phone || 'Не указан'}</div>
+      <hr style="margin: 12px 0; border: none; border-top: 1px solid #e1e5e9;">
+      <div><strong>Компания:</strong> ${client.name}</div>
+      <div><strong>Подписка до:</strong> <span class="${expiresClass}">${formatDate(subscriptionEndDate)} (${daysLeft} дней)</span></div>
+      <div><strong>Сотрудников:</strong> ${client.current_employees_count}/${client.max_employees}</div>
+      <div><strong>Статус:</strong> ${client.is_active ? 'Активна' : 'Неактивна'}</div>
+      <hr style="margin: 12px 0; border: none; border-top: 1px solid #e1e5e9;">
+      <div><strong>Токен создан:</strong> ${formatDate(new Date(token_info.created_at))}</div>
+      <div><strong>Последнее использование:</strong> ${token_info.last_used_at ? formatDate(new Date(token_info.last_used_at)) : 'Никогда'}</div>
+    `;
 
     infoDiv.className = "info-block user-info";
     infoDiv.style.display = "block";

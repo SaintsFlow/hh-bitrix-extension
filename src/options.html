@@ -135,6 +135,17 @@
       font-weight: 500;
     }
 
+    .user-info div {
+      margin-bottom: 6px;
+    }
+
+    .user-info hr {
+      margin: 12px 0;
+      border: none;
+      border-top: 1px solid #b3d9ff;
+      opacity: 0.6;
+    }
+
     .expires-soon {
       color: #dc3545 !important;
       font-weight: 600;
@@ -250,16 +261,16 @@
     
     <div class="form-group">
       <label for="apiRoot">API Root:</label>
-      <input type="text" id="apiRoot" placeholder="https://example.com/api" />
+      <input type="text" id="apiRoot" placeholder="http://localhost:8000/api" />
     </div>
     
     <div class="form-group">
-      <label for="apiKey">API Key:</label>
-      <input type="text" id="apiKey" placeholder="Введите ваш API ключ" />
+      <label for="apiKey">API Token:</label>
+      <input type="text" id="apiKey" placeholder="Введите ваш токен авторизации" />
     </div>
     
     <div class="button-group">
-      <button id="save">Войти</button>
+      <button id="save">Сохранить и войти</button>
       <button id="logout" style="display:none">Выйти</button>
     </div>
     
